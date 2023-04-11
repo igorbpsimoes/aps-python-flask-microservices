@@ -1,0 +1,38 @@
+# docker-compose.yml
+version: '3.8'
+
+volumes:
+  gastodb_vol:
+
+networks:
+  micro_network:
+    external:
+      name: micro_network
+
+services:
+  gasto-api:
+    container_name: cgasto-service
+    build:
+      context: .
+    ports:
+    - "5002:5002"
+    depends_on:
+      - gasto-db
+    networks:
+      - micro_network
+    restart: always
+
+  gasto-db:
+    container_name: cgasto_dbase
+    image: mysql:8
+    ports:
+    - "32001:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: porquinchurrasco
+      MYSQL_DATABASE: gasto
+      MYSQL_USER: porquin
+      MYSQL_PASSWORD: churrasco
+    networks:
+      - micro_network
+    volumes:
+    - gastodb_vol:/var/lib/mysql
