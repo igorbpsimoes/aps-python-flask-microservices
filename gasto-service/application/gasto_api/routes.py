@@ -3,7 +3,8 @@ from . import gasto_api_blueprint
 from .. import db
 from ..models import Gasto
 from flask import jsonify, request
-
+import requests
+from dateutil import parser
 
 @gasto_api_blueprint.route('/api/gastos', methods=['GET'])
 def listarGastos():
@@ -62,9 +63,9 @@ def cadastrarGasto():
 def sincronizarGastos():
     json = request.get_json()
 
-    usuario_cpf = json.get('usuario_cpf', '')
-    data_comeco = json.get('data_comeco', '')
-    data_fim = json.get('data_fim', '')
+    usuario_cpf = json['usuario_cpf']
+    data_comeco = json['data_comeco']
+    data_fim = json['data_fim']
 
     url = 'https://6434029c582420e231716b14.mockapi.io/api/gastos'
     response = requests.get(url)
@@ -82,11 +83,12 @@ def sincronizarGastos():
         novo_gasto.nome = gasto['nome']
         novo_gasto.valor = gasto['valor']
         novo_gasto.descricao = gasto['descricao']
-        novo_gasto.data_ocorrida = gasto['data_ocorrida']
+        novo_gasto.data_ocorrida = parser.parse(gasto['data'])
 
         gastos_inserir.append(novo_gasto)
 
     db.session.add_all(gastos_inserir)
+    db.session.commit()
 
     response = jsonify({'message': 'Gastos sincronizados'})
     return response
@@ -103,27 +105,7 @@ def removerGasto(id):
 
     return jsonify({'result': True})
 
-@app.route('/api/gasto/<int:id>', methods=['PUT'])
-def editarGasto(id):
-    if not request.json:
-        abort(400)
-
-    gasto = Gasto.query.get(id)
-    if gasto is None:
-        abort(404)
-
-    gasto.orcamento_id = request.form['orcamento_id']
-    gasto.categoria_id = request.form['categoria_id']
-    gasto.nome = request.form['nome']
-    gasto.valor = request.form['valor']
-    gasto.descricao = request.form['descricao']
-    gasto.data_ocorrida = request.form['data_ocorrida']
-
-    db.session.commit()
-
-    return jsonify(gasto.to_json())
-
-@app.route('/api/gasto/<int:id>', methods=['PUT'])
+@gasto_api_blueprint.route('/api/gasto/<int:id>', methods=['PUT'])
 def editarGasto(id):
     if not request.json:
         abort(400)

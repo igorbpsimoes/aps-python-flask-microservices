@@ -5,10 +5,10 @@ from datetime import datetime
 
 class Gasto(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    orcamento_id = db.Column(db.Integer, db.ForeignKey('orcamento.id'))
-    categoria_id = db.Column(db.Integer, db.ForeignKey('categoria.id'))
+    orcamento_id = db.Column(db.Integer, nullable=False)
+    categoria_id = db.Column(db.Integer, nullable=False)
     nome = db.Column(db.String(255), nullable=False)
-    valor = db.Column(db.Double, nullable=False)
+    valor = db.Column(db.Float, nullable=False)
     descricao = db.Column(db.String(255), nullable=True)
     data_ocorrida = db.Column(db.DateTime, nullable=False)
     date_added = db.Column(db.DateTime, default=datetime.utcnow)
