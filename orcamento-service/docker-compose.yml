@@ -1,0 +1,39 @@
+# docker-compose.yml
+version: '3.8'
+
+volumes:
+  userdb_vol:
+
+
+networks:
+  micro_network:
+    external:
+      name: micro_network
+
+services:
+  orcamento-api:
+    container_name: corcamento-service
+    build:
+      context: .
+    ports:
+      - "5001:5001"
+    depends_on:
+      - orcamento-db
+    networks:
+      - micro_network
+    restart: always
+
+  orcamento-db:
+    container_name: corcamento_dbase
+    image: mysql:8
+    ports:
+      - "32000:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: pfm_dc_2020
+      MYSQL_DATABASE: orcamento
+      MYSQL_USER: cloudacademy
+      MYSQL_PASSWORD: pfm_2020
+    networks:
+      - micro_network
+    volumes:
+      - userdb_vol:/var/lib/mysql
