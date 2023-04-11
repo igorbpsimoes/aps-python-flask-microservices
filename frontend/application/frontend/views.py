@@ -2,35 +2,35 @@
 import requests
 from . import forms
 from . import frontend_blueprint
-from .. import login_manager
-from .api.UserClient import UserClient
-from .api.ProductClient import ProductClient
-from .api.OrderClient import OrderClient
+from .api.GastoClient import GastoClient
+from .api.OrcamentoClient import OrcamentoClient
 from flask import render_template, session, redirect, url_for, flash, request
-
-from flask_login import current_user
-
-
-@login_manager.user_loader
-def load_user(user_id):
-    return None
-
 
 @frontend_blueprint.route('/', methods=['GET'])
 def home():
-    if current_user.is_authenticated:
-        session['order'] = OrderClient.get_order_from_session()
 
     try:
-        products = ProductClient.get_products()
+        gastos = GastoClient.get_gastos()
     except requests.exceptions.ConnectionError:
-        products = {
+        gastos = {
             'results': []
         }
 
-    return render_template('home/index.html', products=products)
+    return render_template('home/index.html', gastos=gastos)
 
+@frontend_blueprint.route('/cadastrar-orcamento', methods=['POST'])
+def cadastrar_orcamento():
+    form = forms.OrcamentoForm(request.form)
+    if form.validate_on_submit():
+        # Tenta criar um um novo orcamento
+        orcamento = OrcamentoClient.post_orcamento_create(form)
 
+    else:
+        flash('Errors found', 'error')
+
+    return render_template('register/index.html', form=form)
+
+'''
 @frontend_blueprint.route('/register', methods=['GET', 'POST'])
 def register():
     form = forms.RegistrationForm(request.form)
@@ -82,12 +82,10 @@ def login():
             flash('Errors found', 'error')
     return render_template('login/index.html', form=form)
 
-
 @frontend_blueprint.route('/logout', methods=['GET'])
 def logout():
     session.clear()
     return redirect(url_for('frontend.home'))
-
 
 @frontend_blueprint.route('/product/<slug>', methods=['GET', 'POST'])
 def product(slug):
@@ -139,3 +137,4 @@ def thank_you():
     flash('Thank you for your order', 'success')
 
     return render_template('order/thankyou.html')
+'''

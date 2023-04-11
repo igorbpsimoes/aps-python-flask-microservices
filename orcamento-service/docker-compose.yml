@@ -2,7 +2,7 @@
 version: '3.8'
 
 volumes:
-  userdb_vol:
+  orcamentodb_vol:
 
 
 networks:
@@ -36,4 +36,4 @@ services:
     networks:
       - micro_network
     volumes:
-      - userdb_vol:/var/lib/mysql
+      - orcamentodb_vol:/var/lib/mysql

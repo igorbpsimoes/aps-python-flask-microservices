@@ -3,26 +3,26 @@
 
 {% block pageContent %}
 
-{% if products | length > 0 %}
-    {% for product in products.results %}
+{% if gastos | length > 0 %}
+    {% for gasto in gastos %}
 
-{% set url = "/product/" + product.slug %}
-{% set imageSRC = "images/" + product.image %}
+    {{gasto}}
 
 <div class="col-md-4">
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h2 class="panel-title">{{ product.name }}</h2>
+            <h2 class="panel-title">{{ gasto.nome }}</h2>
         </div>
         <div class="panel-body">
+            <!--
             <div class="img-block">
                 <img src="{{ url_for('static', filename=imageSRC) }}" width="100%"/>
             </div>
+            -->
         </div>
         <div class="panel-footer">
             <div class="container">
-                <div class="label label-info">Price: {{ product.price }} $</div>
-                <a class="btn btn-success" href="{{ url }}">View more</a>
+                <div class="label label-info">Valor: {{ gasto.valor }} $</div>
             </div>
         </div>
     </div>
@@ -30,7 +30,7 @@
 {% endfor %}
 
     {% else %}
-        <strong>No products found.</strong>
+        <strong>Nenhum gasto encontrado.</strong>
     {% endif %}
 
 
