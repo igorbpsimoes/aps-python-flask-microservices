@@ -1,11 +1,10 @@
-# application/frontend/api/UserClient.py
+# application/frontend/api/OrcamentoClient.py
 import requests
-from flask import session, request
-
+from flask import request
 
 class OrcamentoClient:
     @staticmethod
-    def post_orcamento_create(form):
+    def criar_orcamento(form):
         payload = {
             'nome': form.nome.data,
             'mes': form.mes.data,
@@ -16,4 +15,3 @@ class OrcamentoClient:
         if response:
             orcamento = response.json()
         return orcamento
-

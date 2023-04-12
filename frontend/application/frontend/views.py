@@ -2,15 +2,14 @@
 import requests
 from . import forms
 from . import frontend_blueprint
-from .api.GastoClient import GastoClient
-from .api.OrcamentoClient import OrcamentoClient
+from .api.Fachada import Fachada
 from flask import render_template, session, redirect, url_for, flash, request
 
 @frontend_blueprint.route('/', methods=['GET'])
 def home():
 
     try:
-        gastos = GastoClient.get_gastos()
+        gastos = Fachada.get_gastos()
     except requests.exceptions.ConnectionError:
         gastos = {
             'results': []
@@ -22,8 +21,7 @@ def home():
 def cadastrar_orcamento():
     form = forms.OrcamentoForm(request.form)
     if form.validate_on_submit():
-        # Tenta criar um um novo orcamento
-        orcamento = OrcamentoClient.post_orcamento_create(form)
+        orcamento = Fachada.create_orcamento(form)
 
     else:
         flash('Errors found', 'error')
