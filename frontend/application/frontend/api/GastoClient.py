@@ -2,6 +2,7 @@
 import requests
 from flask import request
 
+
 class GastoClient:
     @staticmethod
     def listar_gastos():
@@ -10,7 +11,7 @@ class GastoClient:
         return gastos
 
     @staticmethod
-    def post_gasto(gasto):
+    def cadastrar_gasto(gasto):
         url = 'http://cgasto-service:5002/api/gasto/create'
         response = requests.request("POST", url=url, data=gasto)
         if response:
@@ -19,7 +20,7 @@ class GastoClient:
         return
 
     @staticmethod
-    def sync_gastos(info):
+    def sincronizar_gastos(info):
         url = 'http://cgasto-service:5002/api/gasto/sincronizar'
         response = requests.request("POST", url=url, data=info)
         if response:

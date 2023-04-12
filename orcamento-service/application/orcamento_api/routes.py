@@ -11,7 +11,7 @@ def get_orcamentos():
     for row in Orcamento.query.all():
         data.append(row.to_json())
 
-    response = jsonify(data)
+    response = jsonify({'results': data})
     return response
 
 
@@ -25,5 +25,6 @@ def create_orcamento():
     db.session.add(orcamento)
     db.session.commit()
 
-    response = jsonify({'message': 'Orcamento added', 'result': orcamento.to_json()})
+    response = jsonify({'message': 'Orcamento added',
+                       'result': orcamento.to_json()})
     return response

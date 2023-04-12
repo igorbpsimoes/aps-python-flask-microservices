@@ -11,12 +11,13 @@ def home():
 
     try:
         gastos = Fachada.get_gastos()
+        orcamentos = Fachada.get_orcamentos()
     except requests.exceptions.ConnectionError:
         gastos = {
             'results': []
         }
 
-    return render_template('home/index.html', gastos=gastos['results'])
+    return render_template('home/index.html', gastos=gastos['results'], orcamentos=orcamentos['results'])
 
 
 @frontend_blueprint.route('/criar-gasto', methods=['GET', 'POST'])
@@ -28,13 +29,15 @@ def criar_gasto():
             'nome': request.form.get('nome'),
             'data_ocorrida': request.form.get('data_ocorrida'),
             'valor': request.form.get('valor'),
-            'descricao': request.form.get('descricao')
+            'descricao': request.form.get('descricao'),
+            'orcamento_id': request.form.get('orcamento_id')
         }
 
-        GastoClient.post_gasto(payload)
+        Fachada.post_gasto(payload)
 
     elif request.method == 'GET':
-        return render_template('home/gasto_form.html')
+        orcamentos = Fachada.get_orcamentos()
+        return render_template('home/gasto_form.html', orcamentos=orcamentos['results'])
 
     return render_template("home/gasto_form.html")
 
@@ -50,7 +53,7 @@ def sincronizar_gastos():
             'data_fim': request.form.get('data_fim')
         }
 
-        GastoClient.sync_gastos(payload)
+        Fachada.sync_gastos(payload)
 
     elif request.method == 'GET':
         return render_template('home/sync_form.html')
@@ -58,16 +61,34 @@ def sincronizar_gastos():
     return render_template("home/sync_form.html")
 
 
-@frontend_blueprint.route('/cadastrar-orcamento', methods=['POST'])
+@frontend_blueprint.route('/cadastrar-orcamento', methods=['GET', 'POST'])
 def cadastrar_orcamento():
-    form = forms.OrcamentoForm(request.form)
-    if form.validate_on_submit():
-        orcamento = Fachada.create_orcamento(form)
+    if request.method == 'POST':
 
-    else:
-        flash('Errors found', 'error')
+        payload = {
+            'nome': request.form.get('nome'),
+            'mes': request.form.get('mes'),
+            'valor_maximo': request.form.get('valor_maximo')
+        }
 
-    return render_template('register/index.html', form=form)
+        Fachada.create_orcamento(payload)
+
+    elif request.method == 'GET':
+        return render_template('orcamento/form.html')
+
+    return render_template("orcamento/form.html")
+
+
+@frontend_blueprint.route('/orcamento', methods=['GET'])
+def home_orcamento():
+    try:
+        orcamentos = Fachada.get_orcamentos()
+    except requests.exceptions.ConnectionError:
+        orcamentos = {
+            'results': []
+        }
+
+    return render_template('orcamento/index.html', orcamentos=orcamentos['results'])
 
 
 '''

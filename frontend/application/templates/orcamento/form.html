@@ -1,0 +1,25 @@
+{% extends "base_col_1.html" %}
+{% block title %}Home Page{% endblock %}
+
+{% block pageContent %}
+
+<form method="POST">
+    <h3 align="center">Orçamento</h3>
+    <div class="form-group">
+        <label for="nome">Nome</label>
+        <input type="text" class="form-control" id="nome" name="nome" placeholder="Nome do orçamento" />
+    </div>
+    <div class="form-group">
+        <label for="mes">Mês</label>
+        <input type="date" class="form-control" id="mes" name="mes" placeholder="Insira o mês do orçamento" />
+    </div>
+    <div class="form-group">
+        <label for="valor_maximo">Valor máximo</label>
+        <input type="number" class="form-control" id="valor_maximo" name="valor_maximo"
+            placeholder="Insira o valor máximo" />
+    </div>
+    <br />
+    <button type="submit" class="btn btn-primary">Criar orçamento</button>
+</form>
+
+{% endblock %}

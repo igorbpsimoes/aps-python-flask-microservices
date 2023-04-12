@@ -6,8 +6,19 @@
 <form method="POST">
     <h3 align="center">Gasto</h3>
     <div class="form-group">
-        <label for="nome">Nome</label>
-        <input type="text" class="form-control" id="nome" name="nome" placeholder="Nome do gasto" />
+        <label for="Orçamento">Orçamento</label>
+        <!-- <input list="orcamento_id" name="orcamento_id"> -->
+        <!-- <datalist id="orcamento_id"> -->
+        <select name="orcamento_id" id="orcamento_id">
+            {% for orcamento in orcamentos %}
+            <option value="{{ orcamento.id }}"">{{ orcamento.nome }}</option>
+            {% endfor %}
+        </select>
+        <!-- </datalist> -->
+    </div>
+    <div class=" form-group">
+                <label for="nome">Nome</label>
+                <input type="text" class="form-control" id="nome" name="nome" placeholder="Nome do gasto" />
     </div>
     <div class="form-group">
         <label for="data_ocorrida">Data ocorrida</label>

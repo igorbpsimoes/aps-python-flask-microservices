@@ -49,8 +49,7 @@ def filtrarGastos():
 @gasto_api_blueprint.route('/api/gasto/create', methods=['POST'])
 def cadastrarGasto():
     gasto = Gasto()
-    # gasto.orcamento_id = request.form['orcamento_id']
-    gasto.orcamento_id = 1
+    gasto.orcamento_id = request.form['orcamento_id']
     # gasto.categoria_id = request.form['categoria_id']
     gasto.categoria_id = 1
     gasto.nome = request.form['nome']
