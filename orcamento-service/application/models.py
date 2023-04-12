@@ -11,8 +11,8 @@ class Orcamento(db.Model):
 
     def to_json(self):
         return {
+            'id': self.id,
             'nome': self.nome,
             'mes': self.mes,
-            'valor_maximo': self.valor_maximo,
-            'id': self.id
+            'valor_maximo': self.valor_maximo
         }
