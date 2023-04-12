@@ -14,7 +14,7 @@ services:
   gasto-api:
     container_name: cgasto-service
     build:
-      context: .
+      context: ../gasto-service
     ports:
     - "5002:5002"
     depends_on:
@@ -37,11 +37,11 @@ services:
       - micro_network
     volumes:
     - gastodb_vol:/var/lib/mysql
-    
+
   orcamento-api:
     container_name: corcamento-service
     build:
-      context: .
+      context: ../orcamento-service
     ports:
       - "5001:5001"
     depends_on:

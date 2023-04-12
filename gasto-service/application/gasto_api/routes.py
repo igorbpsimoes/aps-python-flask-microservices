@@ -56,7 +56,7 @@ def cadastrarGasto():
     db.session.add(gasto)
     db.session.commit()
 
-    response = jsonify({'message': 'Gasto added', 'gasto': item.to_json()})
+    response = jsonify({'message': 'Gasto added', 'gasto': gasto.to_json()})
     return response
 
 @gasto_api_blueprint.route('/api/gasto/sincronizar', methods=['POST'])
@@ -78,8 +78,8 @@ def sincronizarGastos():
     gastos = response.json()
     for gasto in gastos:
         novo_gasto = Gasto()
-        novo_gasto.orcamento_id = gasto['orcamento_id']
-        novo_gasto.categoria_id = gasto['categoria_id']
+        novo_gasto.orcamento_id = 1
+        novo_gasto.categoria_id = 1
         novo_gasto.nome = gasto['nome']
         novo_gasto.valor = gasto['valor']
         novo_gasto.descricao = gasto['descricao']

@@ -16,7 +16,7 @@ def home():
             'results': []
         }
 
-    return render_template('home/index.html', gastos=gastos)
+    return render_template('home/index.html', gastos=gastos['results'])
 
 @frontend_blueprint.route('/cadastrar-orcamento', methods=['POST'])
 def cadastrar_orcamento():
@@ -86,22 +86,6 @@ def login():
 def logout():
     session.clear()
     return redirect(url_for('frontend.home'))
-
-@frontend_blueprint.route('/product/<slug>', methods=['GET', 'POST'])
-def product(slug):
-    response = ProductClient.get_product(slug)
-    item = response['result']
-
-    form = forms.ItemForm(product_id=item['id'])
-
-    if request.method == "POST":
-        if 'user' not in session:
-            flash('Please login', 'error')
-            return redirect(url_for('frontend.login'))
-        order = OrderClient.post_add_to_cart(product_id=item['id'], qty=1)
-        session['order'] = order['result']
-        flash('Order has been updated', 'success')
-    return render_template('product/index.html', product=item, form=form)
 
 
 @frontend_blueprint.route('/checkout', methods=['GET'])
