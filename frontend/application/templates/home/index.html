@@ -4,7 +4,7 @@
 {% block pageContent %}
 
 {% if gastos | length > 0 %}
-    {% for gasto in gastos %}
+{% for gasto in gastos %}
 
 <div class="col-md-4">
     <div class="panel panel-default">
@@ -20,9 +20,14 @@
 </div>
 {% endfor %}
 
-    {% else %}
-        <strong>Nenhum gasto encontrado.</strong>
-    {% endif %}
-
+{% else %}
+<strong>Nenhum gasto encontrado.</strong>
+{% endif %}
+<form action="/criar-gasto">
+    <input type="submit" value="Criar gasto" />
+</form>
+<form action="/sincronizar-gastos">
+    <input type="submit" value="Sincronizar gastos" />
+</form>
 
 {% endblock %}

@@ -6,6 +6,7 @@ from .api.GastoClient import GastoClient
 from .api.OrcamentoClient import OrcamentoClient
 from flask import render_template, session, redirect, url_for, flash, request
 
+
 @frontend_blueprint.route('/', methods=['GET'])
 def home():
 
@@ -18,6 +19,46 @@ def home():
 
     return render_template('home/index.html', gastos=gastos['results'])
 
+
+@frontend_blueprint.route('/criar-gasto', methods=['GET', 'POST'])
+def criar_gasto():
+
+    if request.method == 'POST':
+
+        payload = {
+            'nome': request.form.get('nome'),
+            'data_ocorrida': request.form.get('data_ocorrida'),
+            'valor': request.form.get('valor'),
+            'descricao': request.form.get('descricao')
+        }
+
+        GastoClient.post_gasto(payload)
+
+    elif request.method == 'GET':
+        return render_template('home/gasto_form.html')
+
+    return render_template("home/gasto_form.html")
+
+
+@frontend_blueprint.route('/sincronizar-gastos', methods=['GET', 'POST'])
+def sincronizar_gastos():
+
+    if request.method == 'POST':
+
+        payload = {
+            'usuario_cpf': request.form.get('usuario_cpf'),
+            'data_inicio': request.form.get('data_inicio'),
+            'data_fim': request.form.get('data_fim')
+        }
+
+        GastoClient.sync_gastos(payload)
+
+    elif request.method == 'GET':
+        return render_template('home/sync_form.html')
+
+    return render_template("home/sync_form.html")
+
+
 @frontend_blueprint.route('/cadastrar-orcamento', methods=['POST'])
 def cadastrar_orcamento():
     form = forms.OrcamentoForm(request.form)
@@ -29,6 +70,7 @@ def cadastrar_orcamento():
         flash('Errors found', 'error')
 
     return render_template('register/index.html', form=form)
+
 
 '''
 @frontend_blueprint.route('/register', methods=['GET', 'POST'])

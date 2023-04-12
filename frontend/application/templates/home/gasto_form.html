@@ -1,0 +1,29 @@
+{% extends "base_col_1.html" %}
+{% block title %}Home Page{% endblock %}
+
+{% block pageContent %}
+
+<form method="POST">
+    <h3 align="center">Gasto</h3>
+    <div class="form-group">
+        <label for="nome">Nome</label>
+        <input type="text" class="form-control" id="nome" name="nome" placeholder="Nome do gasto" />
+    </div>
+    <div class="form-group">
+        <label for="data_ocorrida">Data ocorrida</label>
+        <input type="date" class="form-control" id="data_ocorrida" name="data_ocorrida"
+            placeholder="Insira a data ocorrida" />
+    </div>
+    <div class="form-group">
+        <label for="valor">Valor</label>
+        <input type="number" class="form-control" id="valor" name="valor" placeholder="Insira o valor" />
+    </div>
+    <div class="form-group">
+        <label for="descricao">Descrição</label>
+        <input type="text" class="form-control" id="descricao" name="descricao" placeholder="Insira a descrição" />
+    </div>
+    <br />
+    <button type="submit" class="btn btn-primary">Criar gasto</button>
+</form>
+
+{% endblock %}
