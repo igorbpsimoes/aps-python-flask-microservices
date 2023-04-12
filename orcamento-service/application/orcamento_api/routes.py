@@ -1,6 +1,6 @@
 # application/user_api/routes.py
 from . import orcamento_api_blueprint
-from .. import db, login_manager
+from .. import db
 from ..models import Orcamento
 from flask import make_response, request, jsonify
 
@@ -33,12 +33,3 @@ def create_orcamento():
                        'result': orcamento.to_json()})
 
     return response
-
-# @orcamento_api_blueprint.route('/api/orcamento/<username>/exists', methods=['GET'])
-# def get_orcame(username):
-#     item = User.query.filter_by(username=username).first()
-#     if item is not None:
-#         response = jsonify({'result': True})
-#     else:
-#         response = jsonify({'message': 'Cannot find username'}), 404
-#     return response
